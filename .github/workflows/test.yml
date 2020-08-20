@@ -1,0 +1,31 @@
+# Workflow to continuously run the test suite.
+
+name: test
+
+# Run on every push to the master branch, but only when go files are changed.
+on:
+   push:
+      branches:
+         - "master"
+      paths:
+         - "**.go"
+
+jobs:
+   test:
+      runs-on: ubuntu-latest
+
+      steps:
+         -  name: Checkout
+            uses: actions/checkout@v2
+
+         -  name: Unshallow
+            run: git fetch --prune --unshallow
+
+         -  name: Set up Go
+            uses: actions/setup-go@v1
+            with:
+               go-version: 1.14.x
+            id: go
+
+         -  name: Test
+            run: make test
