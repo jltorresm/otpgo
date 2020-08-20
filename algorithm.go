@@ -10,11 +10,11 @@ import (
 type hmacAlgorithm int
 
 const (
-	// To use the SHA1 hash algorithm to calculate an HMAC.
+	// HmacSHA1 indicates to use the SHA1 hash to calculate an HMAC.
 	HmacSHA1 hmacAlgorithm = iota + 1
-	// To use the SHA256 hash algorithm to calculate an HMAC.
+	// HmacSHA256 indicates to use the SHA256 hash to calculate an HMAC.
 	HmacSHA256
-	// To use the SHA512 hash algorithm to calculate an HMAC.
+	// HmacSHA512 indicates to use the SHA512 hash to calculate an HMAC.
 	HmacSHA512
 )
 

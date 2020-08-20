@@ -1,6 +1,6 @@
 package otpgo
 
-// Type to generate HMAC-Based One-Time Passwords.
+// The HOTP type used to generate HMAC-Based One-Time Passwords.
 type HOTP struct {
 	Key       string // Secret
 	Counter   uint64
