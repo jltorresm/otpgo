@@ -10,12 +10,15 @@ import (
 type hmacAlgorithm int
 
 const (
+	// To use the SHA1 hash algorithm to calculate an HMAC.
 	HmacSHA1 hmacAlgorithm = iota + 1
+	// To use the SHA256 hash algorithm to calculate an HMAC.
 	HmacSHA256
+	// To use the SHA512 hash algorithm to calculate an HMAC.
 	HmacSHA512
 )
 
-// Returns a hash.Hash instance corresponding to the hmacAlgorithm type.
+// Hash returns a hash.Hash instance corresponding to the hmacAlgorithm type.
 func (alg hmacAlgorithm) Hash() (h hash.Hash) {
 	switch alg {
 	case HmacSHA1:

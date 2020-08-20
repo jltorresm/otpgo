@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Represents an invalid key used to generate OTPs
 type ErrorInvalidKey struct {
 	msg string
 }

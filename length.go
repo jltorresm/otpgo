@@ -8,6 +8,7 @@ import (
 
 type otpLength int
 
+// Supported length to the OTP generated using HOTP or TOTP.
 const (
 	Length1 otpLength = iota + 1
 	Length2
