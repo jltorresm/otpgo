@@ -28,4 +28,4 @@ jobs:
             id: go
 
          -  name: Test
-            run: make test
+            run: go test ./...
