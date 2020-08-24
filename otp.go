@@ -26,7 +26,9 @@ func generateOTP(key string, counter uint64, length otpLength, algorithm hmacAlg
 
 	// Start the hmac algorithm
 	hm := hmac.New(algorithm.Hash, k)
-	hm.Write(msg)
+	if _, err := hm.Write(msg); err != nil {
+		return "", err
+	}
 	sum := hm.Sum([]byte{})
 
 	// Build the result integer
