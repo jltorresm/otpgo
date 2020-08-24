@@ -2,11 +2,11 @@
 
 name: test
 
-# Run on every push to the master branch, but only when go files are changed.
+# Run on every push to the main branch, but only when go files are changed.
 on:
    push:
       branches:
-         - "master"
+         - main
       paths:
          - "**.go"
 
