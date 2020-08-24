@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base32"
 	"encoding/binary"
+	"strings"
 )
 
 // RandomKeyLength is the recommended length for the key used to generate OTPs.
@@ -14,6 +15,9 @@ const RandomKeyLength = 64
 
 // Generates a new OTP using the specified parameters based on the rfc4226.
 func generateOTP(key string, counter uint64, length otpLength, algorithm hmacAlgorithm) (string, error) {
+	// Ensure key is uppercase
+	key = strings.ToUpper(key)
+
 	// Decode secret key to bytes
 	k, err := base32.StdEncoding.DecodeString(key)
 	if err != nil {
