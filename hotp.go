@@ -18,6 +18,8 @@ func (h *HOTP) Generate() (string, error) {
 		return "", err
 	}
 
+	h.Counter++
+
 	return generateOTP(h.Key, h.Counter, h.Length, h.Algorithm)
 }
 
