@@ -11,22 +11,22 @@ type HOTP struct {
 // Generate a HMAC-Based One-Time Password.
 func (h *HOTP) Generate() (string, error) {
 	// Make sure we have sensible values to generate secure OTPs
-	h.EnsureDefaults()
+	h.ensureDefaults()
 
 	// Make sure we have a valid non-empty key
-	if err := h.EnsureKey(); err != nil {
+	if err := h.ensureKey(); err != nil {
 		return "", err
 	}
 
 	return generateOTP(h.Key, h.Counter, h.Length, h.Algorithm)
 }
 
-// EnsureDefaults applies sensible default values, if any of them is empty, so
+// ensureDefaults applies sensible default values, if any of them is empty, so
 // that the OTP generation works properly.
 // Defaults:
 //     - Algorithm = SHA1
 //     - Length = 6
-func (h *HOTP) EnsureDefaults() {
+func (h *HOTP) ensureDefaults() {
 	if h.Algorithm == 0 {
 		h.Algorithm = HmacSHA1
 	}
@@ -36,8 +36,8 @@ func (h *HOTP) EnsureDefaults() {
 	}
 }
 
-// EnsureKey generates a proper random key if no value is provided by the caller.
-func (h *HOTP) EnsureKey() (err error) {
+// ensureKey generates a proper random key if no value is provided by the caller.
+func (h *HOTP) ensureKey() (err error) {
 	if h.Key != "" {
 		return nil
 	}
