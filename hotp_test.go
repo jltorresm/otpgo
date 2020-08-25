@@ -108,3 +108,49 @@ func testHOTPLowerCaseKey(t *testing.T) {
 		t.Error("expected Key to be populated")
 	}
 }
+
+func TestHOTP_Validate(t *testing.T) {
+	t.Run("Success", testHOTPValidateSuccess)
+	t.Run("Failure", testHOTPValidateFailure)
+}
+
+func testHOTPValidateSuccess(t *testing.T) {
+	t.Parallel()
+
+	h := &HOTP{
+		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
+		Counter:   362,
+		Algorithm: HmacSHA256,
+		Length:    Length6,
+	}
+
+	// Corresponds to h.Counter 363 which is the expected because h.Generate()
+	// will increase the h.Counter before calculating the code.
+	expectedOTP := "561655"
+
+	isValid, err := h.Validate(expectedOTP)
+	if err != nil {
+		t.Errorf("unexpected error: %s", err)
+	}
+
+	if !isValid {
+		t.Errorf("invalid token\nexpected %s to be valid", expectedOTP)
+	}
+}
+
+func testHOTPValidateFailure(t *testing.T) {
+	t.Parallel()
+
+	invalidOTP := "111111"
+
+	h := &HOTP{Length: Length8}
+
+	isValid, err := h.Validate(invalidOTP)
+	if err != nil {
+		t.Errorf("unexpected error: %s", err)
+	}
+
+	if isValid {
+		t.Errorf("unexpected valid token\nexpected %s to be invalid", invalidOTP)
+	}
+}
