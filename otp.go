@@ -9,8 +9,8 @@ import (
 )
 
 // RandomKeyLength is the recommended length for the key used to generate OTPs.
-// This length will be used to generate default keys (in HOTP.EnsureKey and
-// TOTP.EnsureKey), when the caller does not provide one explicitly.
+// This length will be used to generate default keys (in HOTP.ensureKey and
+// TOTP.ensureKey), when the caller does not provide one explicitly.
 const RandomKeyLength = 64
 
 // Generates a new OTP using the specified parameters based on the rfc4226.

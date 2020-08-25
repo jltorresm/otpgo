@@ -21,10 +21,10 @@ type TOTP struct {
 // Generate a Time-Based One-Time Password.
 func (t *TOTP) Generate() (string, error) {
 	// Make sure we have sensible values to generate secure OTPs
-	t.EnsureDefaults()
+	t.ensureDefaults()
 
 	// Make sure we have a valid non-empty key
-	if err := t.EnsureKey(); err != nil {
+	if err := t.ensureKey(); err != nil {
 		return "", err
 	}
 
@@ -35,13 +35,13 @@ func (t *TOTP) Generate() (string, error) {
 	return generateOTP(t.Key, counter, t.Length, t.Algorithm)
 }
 
-// EnsureDefaults applies sensible default values, if any of them is empty, so
+// ensureDefaults applies sensible default values, if any of them is empty, so
 // that the OTP generation works properly.
 // Defaults:
 //     - Period = TOTPDefaultPeriod = 30
 //     - Algorithm = SHA1
 //     - Length = 6
-func (t *TOTP) EnsureDefaults() {
+func (t *TOTP) ensureDefaults() {
 	if t.Period == 0 {
 		t.Period = TOTPDefaultPeriod
 	}
@@ -55,8 +55,8 @@ func (t *TOTP) EnsureDefaults() {
 	}
 }
 
-// EnsureKey generates a proper random key if no value is provided by the caller.
-func (t *TOTP) EnsureKey() (err error) {
+// ensureKey generates a proper random key if no value is provided by the caller.
+func (t *TOTP) ensureKey() (err error) {
 	if t.Key != "" {
 		return nil
 	}
