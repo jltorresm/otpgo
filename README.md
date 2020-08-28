@@ -6,6 +6,7 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 [![Go Report Card][goReportBadge]][goReportLink]
 [![Test Status][testStatusBadge]][testStatusLink]
 [![GoDoc][goDocBadge]][goDocLink]
+[![Latest Release][releaseBadge]][releaseLink]
 
 # Contents
 - [Supported Operations](#supported-operations)
@@ -100,6 +101,8 @@ filled).
 [testStatusLink]: https://github.com/jltorresm/otpgo/actions?query=workflow%3Atest
 [goDocBadge]: https://godoc.org/github.com/jltorresm/otpgo?status.svg
 [goDocLink]: https://godoc.org/github.com/jltorresm/otpgo
+[releaseBadge]: https://img.shields.io/github/v/release/jltorresm/otpgo?include_prereleases
+[releaseLink]: https://github.com/jltorresm/otpgo/releases/latest
 
 [latest]: https://github.com/kilico-travel/kilico-api/releases/latest
 [rfc4226]: https://tools.ietf.org/html/rfc4226
