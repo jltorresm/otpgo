@@ -38,7 +38,7 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 The simplest way to generate codes is to create the HOTP/TOTP struct and call 
 `Generate()`
 
-```
+```go
 // 
 // HMAC-Based
 //
