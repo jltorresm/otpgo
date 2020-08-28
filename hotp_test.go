@@ -16,19 +16,21 @@ func testHOTPNormalGeneration(t *testing.T) {
 	t.Parallel()
 
 	h := &HOTP{
-		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
-		Counter:   362,
+		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUP",
+		Counter:   363,
 		Algorithm: HmacSHA256,
 		Length:    Length6,
 	}
+
+	expectedOtp := "363033"
 
 	otp, err := h.Generate()
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
 	}
 
-	if otp != "561655" {
-		t.Errorf("wrong hotp\nexpected: %s\n  actual: %s", "561655", otp)
+	if otp != expectedOtp {
+		t.Errorf("wrong hotp\nexpected: %s\n  actual: %s", expectedOtp, otp)
 	}
 }
 
@@ -54,14 +56,19 @@ func testHOTPDefaultParams(t *testing.T) {
 
 	h := &HOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ"}
 
+	expectedLeeway := HOTPDefaultLeeway
 	expectedAlg := HmacSHA1
 	expectedLength := Length6
-	expectedOtp := "958715"
+	expectedOtp := "769784"
 
 	otp, err := h.Generate()
 
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
+	}
+
+	if h.Leeway != expectedLeeway {
+		t.Errorf("unexpected hash algorithm\nexpected: %d (SHA1)\n  actual: %d", expectedLeeway, h.Leeway)
 	}
 
 	if h.Algorithm != expectedAlg {
@@ -112,6 +119,8 @@ func testHOTPLowerCaseKey(t *testing.T) {
 func TestHOTP_Validate(t *testing.T) {
 	t.Run("Success", testHOTPValidateSuccess)
 	t.Run("Failure", testHOTPValidateFailure)
+	t.Run("Look Ahead Validation", testHOTPValidateLeeway)
+	t.Run("Missing Key", testHOTPValidateMissingKey)
 }
 
 func testHOTPValidateSuccess(t *testing.T) {
@@ -119,22 +128,38 @@ func testHOTPValidateSuccess(t *testing.T) {
 
 	h := &HOTP{
 		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
-		Counter:   362,
+		Counter:   363,
 		Algorithm: HmacSHA256,
 		Length:    Length6,
 	}
 
-	// Corresponds to h.Counter 363 which is the expected because h.Generate()
-	// will increase the h.Counter before calculating the code.
+	// Corresponds to h.Counter = 363. Successful validation will increase the
+	// internal h.Counter, so that the next generated code corresponds to
+	// h.Counter = 364.
 	expectedOTP := "561655"
 
 	isValid, err := h.Validate(expectedOTP)
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
 	}
-
 	if !isValid {
 		t.Errorf("invalid token\nexpected %s to be valid", expectedOTP)
+	}
+
+	otp, err := h.Generate()
+	if err != nil {
+		t.Errorf("unexpected error: %s", err)
+	}
+	if otp == expectedOTP {
+		t.Error("invalid token\nexpected generated token to be different after successful validation")
+	}
+
+	isValid, err = h.Validate(otp)
+	if err != nil {
+		t.Errorf("unexpected error: %s", err)
+	}
+	if !isValid {
+		t.Errorf("invalid token\nexpected %s to be valid", otp)
 	}
 }
 
@@ -143,7 +168,7 @@ func testHOTPValidateFailure(t *testing.T) {
 
 	invalidOTP := "111111"
 
-	h := &HOTP{Length: Length8}
+	h := &HOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ", Length: Length8}
 
 	isValid, err := h.Validate(invalidOTP)
 	if err != nil {
@@ -152,5 +177,72 @@ func testHOTPValidateFailure(t *testing.T) {
 
 	if isValid {
 		t.Errorf("unexpected valid token\nexpected %s to be invalid", invalidOTP)
+	}
+}
+
+func testHOTPValidateLeeway(t *testing.T) {
+	t.Parallel()
+
+	h := &HOTP{
+		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUT",
+		Counter:   362,
+		Leeway:    2,
+		Algorithm: HmacSHA512,
+		Length:    Length7,
+	}
+
+	cases := []struct {
+		label         string
+		modifier      int
+		shouldBeValid bool
+	}{
+		{"Correct Step", 0, true},
+		{"One Step Behind", -1, true},
+		{"One Step Ahead", 1, true},
+		{"Two Step Behind", -2, true},
+		{"Two Step Ahead", +2, true},
+		{"Three Step Behind", -3, false},
+		{"Three Step Ahead", 3, false},
+	}
+
+	for _, c := range cases {
+		t.Run(c.label, func(t *testing.T) {
+			h.Counter = uint64(int(h.Counter) + c.modifier)
+			otp, err := h.Generate()
+			if err != nil {
+				t.Errorf("unexpected error: %s", err)
+				t.FailNow()
+			}
+
+			// Return to original counter before validation
+			h.Counter = uint64(int(h.Counter) - c.modifier)
+
+			isValid, err := h.Validate(otp)
+			if err != nil {
+				t.Errorf("unexpected error: %s", err)
+			}
+
+			if isValid != c.shouldBeValid {
+				t.Errorf("unexpected result from Validate()\nexpected %s to be %v", c.label, c.shouldBeValid)
+			}
+		})
+	}
+}
+
+func testHOTPValidateMissingKey(t *testing.T) {
+	h := &HOTP{}
+
+	isValid, err := h.Validate("irrelevant")
+	if err == nil {
+		t.Error("expected error")
+		t.FailNow()
+	}
+
+	if err.Error() != "missing secret key for validation" {
+		t.Errorf("unexpected error: %s", err)
+	}
+
+	if isValid {
+		t.Errorf("token should be invalid")
 	}
 }
