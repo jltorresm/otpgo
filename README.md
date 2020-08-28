@@ -61,11 +61,19 @@ t := otpgo.TOTP{}
 token, _ := t.Generate()
 ```
 
-Each type allows customization. For HMAC-Based tokens you can specify:
-- Key: Secret string, base32 encoded
-- Counter: Unsigned int
-- Algorithm: One of `HmacSHA1`, `HmacSHA256` or `HmacSHA512`
-- Length: `Length1` up to `Length8`
+Each type allows customization. For **HMAC-Based** tokens you can specify:
+- **Key**: Secret string, base32 encoded
+- **Counter**: Unsigned int
+- **Leeway**: Unsigned int
+- **Algorithm**: One of `HmacSHA1`, `HmacSHA256` or `HmacSHA512`
+- **Length**: `Length1` up to `Length8`
+
+For **Time-Based** tokens you can specify:
+- **Key**: Secret string, base32 encoded
+- **Period**: Integer, period length in seconds
+- **Delay**: Integer, acceptable number of steps for validation
+- **Algorithm**: One of `HmacSHA1`, `HmacSHA256` or `HmacSHA512`
+- **Length**: `Length1` up to `Length8`
 
 ### Verifying Codes
 Once you receive a token from the user you can verify it by specifying the 
@@ -89,6 +97,13 @@ t := otpgo.TOTP{
 }
 ok, _ = t.Validate("the-token")
 ```
+
+When calling `HOTP.Validate()` note that the internal counter will be increased
+if validation is successful, so that the next valid token will correspond to the
+increased counter.
+
+Both `HOTP` and `TOTP` will accept tokens that match the exact 
+`Counter`/`Timestamp` or a token within the specified `Leeway`/`Delay`.
 
 ### Registering With Authenticator Apps
 TBD
