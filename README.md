@@ -57,8 +57,8 @@ token2, _ := h.Generate()
 //
 
 // Will use all default values
-h := otpgo.HOTP{}
-token, _ := h.Generate()
+t := otpgo.TOTP{}
+token, _ := t.Generate()
 ```
 
 Each type allows customization. For HMAC-Based tokens you can specify:
@@ -68,7 +68,27 @@ Each type allows customization. For HMAC-Based tokens you can specify:
 - Length: `Length1` up to `Length8`
 
 ### Verifying Codes
-TBD
+Once you receive a token from the user you can verify it by specifying the 
+expected parameters and calling `Validate(token string)`.
+
+```go
+// 
+// HMAC-Based
+//
+h := otpgo.HOTP{
+    Key: "my-secret-key",
+    Counter: 123, // The expected counter
+}
+ok, _ := h.Validate("the-token")
+
+//
+// Time-Based
+//
+t := otpgo.TOTP{
+    Key: "my-secret-key",
+}
+ok, _ = t.Validate("the-token")
+```
 
 ### Registering With Authenticator Apps
 TBD
