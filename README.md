@@ -22,9 +22,9 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 
 ## Supported Operations
 - Generate HOTP and TOTP codes.
+- Verify HOTP an TOTP codes.
 
 ## Planned Functionality
-- Verify HOTP an TOTP codes.
 - Generate QR code image to register secrets in authenticator apps.
 
 ## Reading Material
