@@ -1,13 +1,13 @@
-package otpgo
+package config
 
 import (
 	"testing"
 )
 
-func TestOtpLength_Truncate(t *testing.T) {
+func TestLength_Truncate(t *testing.T) {
 	cases := []struct {
 		label       string
-		length      otpLength
+		length      Length
 		number      int
 		expectedMod int
 	}{
@@ -19,7 +19,7 @@ func TestOtpLength_Truncate(t *testing.T) {
 		{"Length 6", Length6, 433494437, 494437},
 		{"Length 7", Length7, 433494437, 3494437},
 		{"Length 8", Length8, 433494437, 33494437},
-		{"Length 10", otpLength(10), 433494437, 433494437},
+		{"Length 10", Length(10), 433494437, 433494437},
 	}
 
 	for _, c := range cases {
@@ -32,10 +32,10 @@ func TestOtpLength_Truncate(t *testing.T) {
 	}
 }
 
-func TestOtpLength_LeftPad(t *testing.T) {
+func TestLength_LeftPad(t *testing.T) {
 	cases := []struct {
 		label    string
-		length   otpLength
+		length   Length
 		number   int
 		expected string
 	}{
@@ -47,7 +47,7 @@ func TestOtpLength_LeftPad(t *testing.T) {
 		{"Length 6", Length6, 1, "000001"},
 		{"Length 7", Length7, 1, "0000001"},
 		{"Length 8", Length8, 1, "00000001"},
-		{"Length 10", otpLength(10), 1, "0000000001"},
+		{"Length 10", Length(10), 1, "0000000001"},
 		{"Long number", Length2, 433494437, "433494437"},
 	}
 

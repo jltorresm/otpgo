@@ -1,4 +1,4 @@
-package otpgo
+package config
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"strconv"
 )
 
-type otpLength int
+type Length int
 
 // Supported length to the OTP generated using HOTP or TOTP.
 const (
-	Length1 otpLength = iota + 1
+	Length1 Length = iota + 1
 	Length2
 	Length3
 	Length4
@@ -20,11 +20,15 @@ const (
 	Length8
 )
 
-func (l otpLength) Truncate(number int) int {
+func (l Length) Truncate(number int) int {
 	return number % int(math.Pow10(int(l)))
 }
 
-func (l otpLength) LeftPad(number int) string {
+func (l Length) LeftPad(number int) string {
 	format := "%0" + strconv.Itoa(int(l)) + "d"
 	return fmt.Sprintf(format, number)
+}
+
+func (l Length) String() string {
+	return strconv.Itoa(int(l))
 }
