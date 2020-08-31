@@ -2,6 +2,8 @@ package otpgo
 
 import (
 	"errors"
+
+	"github.com/jltorresm/otpgo/config"
 )
 
 const (
@@ -16,8 +18,8 @@ type HOTP struct {
 	Key       string // Secret
 	Counter   uint64
 	Leeway    uint64
-	Algorithm hmacAlgorithm
-	Length    otpLength
+	Algorithm config.HmacAlgorithm
+	Length    config.Length
 }
 
 // Generate a HMAC-Based One-Time Password.
@@ -81,6 +83,7 @@ func (h *HOTP) Validate(token string) (bool, error) {
 // ensureDefaults applies sensible default values, if any of them is empty, so
 // that the OTP generation works properly.
 // Defaults:
+//     - Leeway = HOTPDefaultLeeway = 1
 //     - Algorithm = SHA1
 //     - Length = 6
 func (h *HOTP) ensureDefaults() {
@@ -89,11 +92,11 @@ func (h *HOTP) ensureDefaults() {
 	}
 
 	if h.Algorithm == 0 {
-		h.Algorithm = HmacSHA1
+		h.Algorithm = config.HmacSHA1
 	}
 
 	if h.Length == 0 {
-		h.Length = Length6
+		h.Length = config.Length6
 	}
 }
 

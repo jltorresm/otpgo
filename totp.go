@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math"
 	"time"
+
+	"github.com/jltorresm/otpgo/config"
 )
 
 const (
@@ -20,8 +22,8 @@ type TOTP struct {
 	Key       string // Secret
 	Period    int    // In seconds
 	Delay     int    // Acceptable steps for network delay
-	Algorithm hmacAlgorithm
-	Length    otpLength
+	Algorithm config.HmacAlgorithm
+	Length    config.Length
 }
 
 // Generate a Time-Based One-Time Password.
@@ -83,6 +85,7 @@ func (t *TOTP) Validate(token string) (bool, error) {
 // that the OTP generation works properly.
 // Defaults:
 //     - Period = TOTPDefaultPeriod = 30
+//     - Delay = TOTPDefaultDelay = 1
 //     - Algorithm = SHA1
 //     - Length = 6
 func (t *TOTP) ensureDefaults() {
@@ -95,11 +98,11 @@ func (t *TOTP) ensureDefaults() {
 	}
 
 	if t.Algorithm == 0 {
-		t.Algorithm = HmacSHA1
+		t.Algorithm = config.HmacSHA1
 	}
 
 	if t.Length == 0 {
-		t.Length = Length6
+		t.Length = config.Length6
 	}
 }
 

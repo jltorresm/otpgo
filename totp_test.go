@@ -3,6 +3,8 @@ package otpgo
 import (
 	"testing"
 	"time"
+
+	"github.com/jltorresm/otpgo/config"
 )
 
 func TestTOTP_Generate(t *testing.T) {
@@ -19,11 +21,11 @@ func testTOTPNormalGeneration(t *testing.T) {
 	totp := &TOTP{
 		Key:       key,
 		Period:    TOTPDefaultPeriod,
-		Algorithm: HmacSHA256,
-		Length:    Length6,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length6,
 	}
 
-	expectedOTP, err := getExpectedTOTP(key, totp.getCounter(time.Now().Unix()), Length6, HmacSHA256)
+	expectedOTP, err := getExpectedTOTP(key, totp.getCounter(time.Now().Unix()), config.Length6, config.HmacSHA256)
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
 		t.FailNow()
@@ -43,8 +45,8 @@ func testTOTPBadKey(t *testing.T) {
 	totp := &TOTP{
 		Key:       "invalid-base-32",
 		Period:    TOTPDefaultPeriod,
-		Algorithm: HmacSHA256,
-		Length:    Length6,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length6,
 	}
 
 	_, err := totp.Generate()
@@ -58,8 +60,8 @@ func testTOTPDefaultParams(t *testing.T) {
 	key := "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ"
 	expectedPeriod := TOTPDefaultPeriod
 	expectedDelay := TOTPDefaultDelay
-	expectedAlg := HmacSHA1
-	expectedLength := Length6
+	expectedAlg := config.HmacSHA1
+	expectedLength := config.Length6
 
 	totp := &TOTP{Key: key}
 
@@ -140,8 +142,8 @@ func testTOTPValidateSuccess(t *testing.T) {
 		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
 		Period:    TOTPDefaultPeriod,
 		Delay:     TOTPDefaultDelay,
-		Algorithm: HmacSHA512,
-		Length:    Length8,
+		Algorithm: config.HmacSHA512,
+		Length:    config.Length8,
 	}
 
 	expectedOTP, err := getExpectedTOTP(totp.Key, totp.getCounter(time.Now().Unix()), totp.Length, totp.Algorithm)
@@ -165,7 +167,7 @@ func testTOTPValidateFailure(t *testing.T) {
 
 	invalidOTP := "111111"
 
-	totp := &TOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ", Length: Length8}
+	totp := &TOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ", Length: config.Length8}
 
 	isValid, err := totp.Validate(invalidOTP)
 	if err != nil {
@@ -184,8 +186,8 @@ func testTOTPValidateDelayed(t *testing.T) {
 		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
 		Period:    10,
 		Delay:     2,
-		Algorithm: HmacSHA256,
-		Length:    Length7,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length7,
 	}
 
 	cases := []struct {
@@ -241,7 +243,7 @@ func testTOTPValidateMissingKey(t *testing.T) {
 	}
 }
 
-func getExpectedTOTP(key string, counter uint64, length otpLength, algorithm hmacAlgorithm) (string, error) {
+func getExpectedTOTP(key string, counter uint64, length config.Length, algorithm config.HmacAlgorithm) (string, error) {
 	expectedOTP, err := generateOTP(key, counter, length, algorithm)
 	if err != nil {
 		return "", err

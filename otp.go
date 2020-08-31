@@ -6,6 +6,8 @@ import (
 	"encoding/base32"
 	"encoding/binary"
 	"strings"
+
+	"github.com/jltorresm/otpgo/config"
 )
 
 // RandomKeyLength is the recommended length for the key used to generate OTPs.
@@ -14,7 +16,7 @@ import (
 const RandomKeyLength = 64
 
 // Generates a new OTP using the specified parameters based on the rfc4226.
-func generateOTP(key string, counter uint64, length otpLength, algorithm hmacAlgorithm) (string, error) {
+func generateOTP(key string, counter uint64, length config.Length, algorithm config.HmacAlgorithm) (string, error) {
 	// Ensure key is uppercase
 	key = strings.ToUpper(key)
 
