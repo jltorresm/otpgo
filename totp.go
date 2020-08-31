@@ -3,8 +3,11 @@ package otpgo
 import (
 	"errors"
 	"math"
+	"net/url"
+	"strconv"
 	"time"
 
+	"github.com/jltorresm/otpgo/authenticator"
 	"github.com/jltorresm/otpgo/config"
 )
 
@@ -19,8 +22,8 @@ const (
 
 // The TOTP type used to generate Time-Based One-Time Passwords.
 type TOTP struct {
-	Key       string // Secret
-	Period    int    // In seconds
+	Key       string // Secret base32 encoded string
+	Period    int    // Number of seconds the TOTP is valid
 	Delay     int    // Acceptable steps for network delay
 	Algorithm config.HmacAlgorithm
 	Length    config.Length
@@ -42,7 +45,11 @@ func (t *TOTP) Generate() (string, error) {
 	return generateOTP(t.Key, counter, t.Length, t.Algorithm)
 }
 
-// Validate will try to check if the provided token is a valid OTP for the current TOTP config.
+// Validate will try to check if the provided token is a valid OTP for the
+// current TOTP config.
+//
+// If the TOTP struct is using all the default values the config will be
+// compatible with the Google Authenticator app, as well as most other apps.
 func (t *TOTP) Validate(token string) (bool, error) {
 	// This will be the base for all validations
 	now := time.Now().Unix()
@@ -79,6 +86,31 @@ func (t *TOTP) Validate(token string) (bool, error) {
 	}
 
 	return false, nil
+}
+
+// KeyUri return an authenticator.KeyUri configured with the current TOTP params.
+//     - accountName is the username or email of the account
+//     - issuer is the site or org
+func (t *TOTP) KeyUri(accountName, issuer string) authenticator.KeyUri {
+	return authenticator.KeyUri{
+		Type: "totp",
+		Label: authenticator.Label{
+			AccountName: accountName,
+			Issuer:      issuer,
+		},
+		Parameters: t,
+	}
+}
+
+func (t *TOTP) AsUrlValues(issuer string) url.Values {
+	params := url.Values{}
+	params.Add("secret", t.Key)
+	params.Add("period", strconv.Itoa(t.Period))
+	params.Add("algorithm", t.Algorithm.String())
+	params.Add("digits", t.Length.String())
+	params.Add("issuer", issuer)
+
+	return params
 }
 
 // ensureDefaults applies sensible default values, if any of them is empty, so

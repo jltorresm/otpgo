@@ -248,3 +248,22 @@ func testHOTPValidateMissingKey(t *testing.T) {
 		t.Errorf("token should be invalid")
 	}
 }
+
+func TestHOTP_KeyUri(t *testing.T) {
+	h := HOTP{
+		Key:       "JOC773H4BTUR5U6M422M2AT7S4MTQ7BLR75Y252JK3A",
+		Counter:   759,
+		Algorithm: config.HmacSHA256,
+	}
+	_, _ = h.Generate()
+
+	accountName := "jòhn.doe@example.com"
+	issuer := "Acme Inc"
+	expectedUri := "otpauth://hotp/Acme%20Inc:j%C3%B2hn.doe@example.com?algorithm=SHA256&counter=759&digits=6&issuer=Acme+Inc&secret=JOC773H4BTUR5U6M422M2AT7S4MTQ7BLR75Y252JK3A"
+
+	uri := h.KeyUri(accountName, issuer)
+
+	if expectedUri != uri.String() {
+		t.Errorf("unexpected key URI\nexpected: %s\n  actual: %s", expectedUri, uri.String())
+	}
+}

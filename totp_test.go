@@ -243,6 +243,21 @@ func testTOTPValidateMissingKey(t *testing.T) {
 	}
 }
 
+func TestTOTP_KeyUri(t *testing.T) {
+	totp := TOTP{Key: "JOC773H4BTUR5U6M422M2AT7S4MTQ7BLR75Y252JK3A"}
+	_, _ = totp.Generate()
+
+	accountName := "jòhn.doe@example.com"
+	issuer := "Acme Inc"
+	expectedUri := "otpauth://totp/Acme%20Inc:j%C3%B2hn.doe@example.com?algorithm=SHA1&digits=6&issuer=Acme+Inc&period=30&secret=JOC773H4BTUR5U6M422M2AT7S4MTQ7BLR75Y252JK3A"
+
+	uri := totp.KeyUri(accountName, issuer)
+
+	if expectedUri != uri.String() {
+		t.Errorf("unexpected key URI\nexpected: %s\n  actual: %s", expectedUri, uri.String())
+	}
+}
+
 func getExpectedTOTP(key string, counter uint64, length config.Length, algorithm config.HmacAlgorithm) (string, error) {
 	expectedOTP, err := generateOTP(key, counter, length, algorithm)
 	if err != nil {
