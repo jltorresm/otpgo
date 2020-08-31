@@ -1,8 +1,15 @@
 package authenticator
 
 import (
+	"encoding/base64"
 	"fmt"
 	"net/url"
+
+	"github.com/skip2/go-qrcode"
+)
+
+const (
+	QRSize = 256
 )
 
 // The KeyUri type holds all the config necessary to generate a valid
@@ -20,6 +27,25 @@ func (ku *KeyUri) String() string {
 	raw := fmt.Sprintf(format, ku.Type, ku.Label.String(), ku.Parameters.AsUrlValues(ku.Label.Issuer).Encode())
 	uri, _ := url.Parse(raw)
 	return uri.String()
+}
+
+// Base64QR will encode the value returned by KeyUri.String into a Base64QR code that can be
+// displayed and then scanned by the user. The return value is the base64
+// encoded image data.
+func (ku *KeyUri) Base64QR() (string, error) {
+	uri := ku.String()
+
+	qr, err := qrcode.New(uri, qrcode.Medium)
+	if err != nil {
+		return "", err
+	}
+
+	bytes, err := qr.PNG(QRSize)
+	if err != nil {
+		return "", err
+	}
+
+	return "data:image/png;base64," + base64.StdEncoding.EncodeToString(bytes), nil
 }
 
 // The Label is used to identify which account a key is associated with.
