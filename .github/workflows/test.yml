@@ -3,6 +3,7 @@
 name: test
 
 # Run on every push to the main branch, but only when go files are changed.
+# Also run on pull requests that modify some go files.
 on:
    push:
       branches:
@@ -10,8 +11,14 @@ on:
       paths:
          - "**.go"
 
+   pull-request:
+      paths:
+         - "**.go"
+
 jobs:
    test:
+      name: Test suite and coverage
+
       runs-on: ubuntu-latest
 
       steps:
