@@ -5,7 +5,7 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 [![License][licenseBadge]][licenseLink]
 [![Go Report Card][goReportBadge]][goReportLink]
 [![Test Status][testStatusBadge]][testStatusLink]
-[![GoDoc][goDocBadge]][goDocLink]
+[![PkgGoDev][pkgGoDevBadge]][pkgGoDevLink]
 [![Latest Release][releaseBadge]][releaseLink]
 
 # Contents
@@ -134,8 +134,8 @@ filled).
 [goReportLink]: https://goreportcard.com/report/github.com/jltorresm/otpgo
 [testStatusBadge]: https://img.shields.io/github/workflow/status/jltorresm/otpgo/test?label=test&logo=github
 [testStatusLink]: https://github.com/jltorresm/otpgo/actions?query=workflow%3Atest
-[goDocBadge]: https://godoc.org/github.com/jltorresm/otpgo?status.svg
-[goDocLink]: https://godoc.org/github.com/jltorresm/otpgo
+[pkgGoDevBadge]: https://pkg.go.dev/badge/github.com/jltorresm/otpgo
+[pkgGoDevLink]: https://pkg.go.dev/github.com/jltorresm/otpgo
 [releaseBadge]: https://img.shields.io/github/v/release/jltorresm/otpgo?include_prereleases
 [releaseLink]: https://github.com/jltorresm/otpgo/releases/latest
 
