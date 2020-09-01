@@ -17,7 +17,7 @@ on:
 
 jobs:
    test:
-      name: Test suite
+      name: Test suite and Coverage
 
       runs-on: ubuntu-latest
 
