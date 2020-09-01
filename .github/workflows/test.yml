@@ -11,7 +11,7 @@ on:
       paths:
          - "**.go"
 
-   pull-request:
+   pull_request:
       paths:
          - "**.go"
 
