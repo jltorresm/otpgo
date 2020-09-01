@@ -5,6 +5,7 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 [![License][licenseBadge]][licenseLink]
 [![Go Report Card][goReportBadge]][goReportLink]
 [![Test Status][testStatusBadge]][testStatusLink]
+[![Coverage Status][coverageBadge]][coverageLink]
 [![PkgGoDev][pkgGoDevBadge]][pkgGoDevLink]
 [![Latest Release][releaseBadge]][releaseLink]
 
@@ -138,6 +139,8 @@ filled).
 [pkgGoDevLink]: https://pkg.go.dev/github.com/jltorresm/otpgo
 [releaseBadge]: https://img.shields.io/github/v/release/jltorresm/otpgo?include_prereleases
 [releaseLink]: https://github.com/jltorresm/otpgo/releases/latest
+[coverageBadge]: https://coveralls.io/repos/github/jltorresm/otpgo/badge.svg?branch=main
+[coverageLink]: https://coveralls.io/github/jltorresm/otpgo?branch=main
 
 [latest]: https://github.com/kilico-travel/kilico-api/releases/latest
 [rfc4226]: https://tools.ietf.org/html/rfc4226
