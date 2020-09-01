@@ -10,7 +10,6 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 
 # Contents
 - [Supported Operations](#supported-operations)
-- [Planned Functionality](#planned-functionality)
 - [Reading Material](#reading-material)
 - [Usage](#usage)
     - [Generating Codes](#generating-codes)
@@ -23,8 +22,6 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 ## Supported Operations
 - Generate HOTP and TOTP codes.
 - Verify HOTP an TOTP codes.
-
-## Planned Functionality
 - Generate QR code image to register secrets in authenticator apps.
 
 ## Reading Material
