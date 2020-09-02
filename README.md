@@ -1,4 +1,4 @@
-# otpgo :: WIP
+# otpgo
 HMAC-Based and Time-Based One-Time Password (HOTP and TOTP) library for Go. 
 Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 
