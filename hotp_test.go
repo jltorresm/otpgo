@@ -2,6 +2,8 @@ package otpgo
 
 import (
 	"testing"
+
+	"github.com/jltorresm/otpgo/config"
 )
 
 func TestHOTP_Generate(t *testing.T) {
@@ -18,8 +20,8 @@ func testHOTPNormalGeneration(t *testing.T) {
 	h := &HOTP{
 		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUP",
 		Counter:   363,
-		Algorithm: HmacSHA256,
-		Length:    Length6,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length6,
 	}
 
 	expectedOtp := "363033"
@@ -40,8 +42,8 @@ func testHOTPBadKey(t *testing.T) {
 	h := &HOTP{
 		Key:       "invalid-base-32",
 		Counter:   363,
-		Algorithm: HmacSHA256,
-		Length:    Length6,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length6,
 	}
 
 	_, err := h.Generate()
@@ -57,8 +59,8 @@ func testHOTPDefaultParams(t *testing.T) {
 	h := &HOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ"}
 
 	expectedLeeway := HOTPDefaultLeeway
-	expectedAlg := HmacSHA1
-	expectedLength := Length6
+	expectedAlg := config.HmacSHA1
+	expectedLength := config.Length6
 	expectedOtp := "769784"
 
 	otp, err := h.Generate()
@@ -129,8 +131,8 @@ func testHOTPValidateSuccess(t *testing.T) {
 	h := &HOTP{
 		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
 		Counter:   363,
-		Algorithm: HmacSHA256,
-		Length:    Length6,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length6,
 	}
 
 	// Corresponds to h.Counter = 363. Successful validation will increase the
@@ -168,7 +170,7 @@ func testHOTPValidateFailure(t *testing.T) {
 
 	invalidOTP := "1111111"
 
-	h := &HOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ", Length: Length8}
+	h := &HOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ", Length: config.Length8}
 
 	isValid, err := h.Validate(invalidOTP)
 	if err != nil {
@@ -187,8 +189,8 @@ func testHOTPValidateLeeway(t *testing.T) {
 		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUT",
 		Counter:   362,
 		Leeway:    2,
-		Algorithm: HmacSHA512,
-		Length:    Length7,
+		Algorithm: config.HmacSHA512,
+		Length:    config.Length7,
 	}
 
 	cases := []struct {
@@ -244,5 +246,24 @@ func testHOTPValidateMissingKey(t *testing.T) {
 
 	if isValid {
 		t.Errorf("token should be invalid")
+	}
+}
+
+func TestHOTP_KeyUri(t *testing.T) {
+	h := HOTP{
+		Key:       "JOC773H4BTUR5U6M422M2AT7S4MTQ7BLR75Y252JK3A",
+		Counter:   759,
+		Algorithm: config.HmacSHA256,
+	}
+	_, _ = h.Generate()
+
+	accountName := "jòhn.doe@example.com"
+	issuer := "Acme Inc"
+	expectedUri := "otpauth://hotp/Acme%20Inc:j%C3%B2hn.doe@example.com?algorithm=SHA256&counter=759&digits=6&issuer=Acme+Inc&secret=JOC773H4BTUR5U6M422M2AT7S4MTQ7BLR75Y252JK3A"
+
+	uri := h.KeyUri(accountName, issuer)
+
+	if expectedUri != uri.String() {
+		t.Errorf("unexpected key URI\nexpected: %s\n  actual: %s", expectedUri, uri.String())
 	}
 }
