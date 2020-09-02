@@ -17,6 +17,8 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
     - [Generating Codes](#generating-codes)
     - [Verifying Codes](#verifying-codes)
     - [Registering with Authenticator App](#registering-with-authenticator-apps)
+        - [QR Code](#qr-code)
+        - [Manual Registration](#manual-registration)
 - [Defaults](#defaults)
     - [HOTP Parameters](#hotp-parameters)
     - [TOTP Parameters](#totp-parameters)
@@ -24,9 +26,11 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 ## Supported Operations
 - Generate HOTP and TOTP codes.
 - Verify HOTP an TOTP codes.
+- Export OTP config as a [Google Authenticator URI][googleURI].
 
 ## Planned Functionality
-- Generate QR code image to register secrets in authenticator apps.
+- Export OTP config as a QR code image (used to register secrets in authenticator apps).
+- Export OTP config as a JSON.
 
 ## Reading Material
 - [HOTP: An HMAC-Based One-Time Password Algorithm][rfc4226]
@@ -107,7 +111,17 @@ Both `HOTP` and `TOTP` will accept tokens that match the exact
 `Counter`/`Timestamp` or a token within the specified `Leeway`/`Delay`.
 
 ### Registering With Authenticator Apps
-TBD
+Most authenticator apps will give the user 2 options to register a new account:
+scan a QR code which contains all config and secrets for the OTP generation, or 
+manually enter the secret key and additional info (such as username and issuer).
+The former being the preferred way because of the ease of use and the avoidance
+of human error.
+
+#### QR Code
+TODO
+
+#### Manual registration
+TODO
 
 ## Defaults
 If caller doesn't provide a custom configuration when generating OTPs. The 
@@ -115,19 +129,21 @@ library will ensure the following default values (any empty value will be
 filled).
 
 ### HOTP Parameters
-|Parameter|Default Value                      |
-|:-------:|:---------------------------------:|
-|Hash     |`SHA1`                             |
-|Length   |`6`                                |
-|Key      |`64` random bytes `base32` encoded |
+|Parameter        |Default Value                      |
+|:---------------:|:---------------------------------:|
+|Leeway           |`1` counter down & up              |
+|Hash / Algorithm |`SHA1`                             |
+|Length           |`6`                                |
+|Key              |`64` random bytes `base32` encoded |
 
 ### TOTP Parameters
-|Parameter|Default Value                      |
-|:-------:|:---------------------------------:|
-|Period   |`30` seconds                       |
-|Hash     |`SHA1`                             |
-|Length   |`6`                                |
-|Key      |`64` random bytes `base32` encoded |
+|Parameter        |Default Value                      |
+|:---------------:|:---------------------------------:|
+|Period           |`30` seconds                       |
+|Delay            |`1` period under & over            |
+|Hash / Algorithm |`SHA1`                             |
+|Length           |`6`                                |
+|Key              |`64` random bytes `base32` encoded |
 
 [licenseBadge]: https://img.shields.io/github/license/jltorresm/otpgo
 [licenseLink]: https://github.com/jltorresm/otpgo/blob/main/LICENSE
