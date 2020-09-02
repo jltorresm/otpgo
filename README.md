@@ -118,7 +118,16 @@ The former being the preferred way because of the ease of use and the avoidance
 of human error.
 
 #### QR Code
-TODO
+To generate the QR code just get the `KeyUri` and call the `QRCode` method:
+```go
+otp := otpgo.TOTP{}
+base64EncodedQRImage, _ := otp.
+   KeyUri("john.doe@example.org", "A Company").
+   QRCode()
+
+// Then use base64EncodedQRImage however you like
+// e.g.: send it to the client to display as an image
+```
 
 #### Manual registration
 TODO
