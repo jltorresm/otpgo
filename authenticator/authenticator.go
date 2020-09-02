@@ -29,10 +29,10 @@ func (ku *KeyUri) String() string {
 	return uri.String()
 }
 
-// Base64QR will encode the value returned by KeyUri.String into a Base64QR code that can be
-// displayed and then scanned by the user. The return value is the base64
-// encoded image data.
-func (ku *KeyUri) Base64QR() (string, error) {
+// QRCode will encode the value returned by KeyUri.String into a base64
+// encoded image containing a QR code that can be displayed and then scanned by
+// the user. The return value is the base64 encoded image data.
+func (ku *KeyUri) QRCode() (string, error) {
 	uri := ku.String()
 
 	qr, err := qrcode.New(uri, qrcode.Medium)

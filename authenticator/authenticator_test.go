@@ -72,7 +72,7 @@ func TestKeyUri_String(t *testing.T) {
 	}
 }
 
-func TestKeyUri_Base64QR(t *testing.T) {
+func TestKeyUri_QRCode(t *testing.T) {
 	ku := KeyUri{
 		Type: "mock",
 		Label: Label{
@@ -99,7 +99,7 @@ func TestKeyUri_Base64QR(t *testing.T) {
 		"pPZPHUPtqjj5EzA+9VzZPWV1SYccv/7RWxy4Fvfmqr+BQAA///VaqA18lDV5wAAAABJRU5" +
 		"ErkJggg=="
 
-	qr, err := ku.Base64QR()
+	qr, err := ku.QRCode()
 
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
