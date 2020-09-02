@@ -97,6 +97,7 @@ func (h *HOTP) KeyUri(accountName, issuer string) *authenticator.KeyUri {
 	}
 }
 
+// AsUrlValues returns the HOTP parameters represented as url.Values.
 func (h *HOTP) AsUrlValues(issuer string) url.Values {
 	params := url.Values{}
 	params.Add("secret", h.Key)

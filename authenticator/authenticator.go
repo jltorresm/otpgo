@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	// QRSize indicates the size of the generated image containing the QR code.
 	QRSize = 256
 )
 

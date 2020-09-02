@@ -7,6 +7,7 @@ import (
 	"hash"
 )
 
+// HmacAlgorithm type describes the supported hash algorithms for usage in OTP generation.
 type HmacAlgorithm int
 
 const (

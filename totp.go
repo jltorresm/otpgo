@@ -102,6 +102,7 @@ func (t *TOTP) KeyUri(accountName, issuer string) *authenticator.KeyUri {
 	}
 }
 
+// AsUrlValues returns the TOTP parameters represented as url.Values.
 func (t *TOTP) AsUrlValues(issuer string) url.Values {
 	params := url.Values{}
 	params.Add("secret", t.Key)
