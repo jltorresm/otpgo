@@ -168,7 +168,7 @@ func testHOTPValidateSuccess(t *testing.T) {
 func testHOTPValidateFailure(t *testing.T) {
 	t.Parallel()
 
-	invalidOTP := "111111"
+	invalidOTP := "1111111"
 
 	h := &HOTP{Key: "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ", Length: config.Length8}
 

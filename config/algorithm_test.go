@@ -71,7 +71,7 @@ func TestHmacAlgorithm_String(t *testing.T) {
 				t.Errorf("case %s: was expected to panic", label)
 			}
 		}()
-		alg.Hash()
+		_ = alg.String()
 	}
 
 	for _, c := range cases {
