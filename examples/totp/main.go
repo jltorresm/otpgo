@@ -35,7 +35,17 @@ func main() {
 	fmt.Printf("Validated codes:\n\t- %s -> %v\n\t- %s -> %v\n", otp1, ok, otherCode, ok2)
 
 	// If trying to validate without a key it will error out.
-	t = otpgo.TOTP{}
-	isValid, err := t.Validate("a-token")
+	t2 := otpgo.TOTP{}
+	isValid, err := t2.Validate("a-token")
 	fmt.Printf("Trying to validate without key, is valid: %v, error: %s\n", isValid, err)
+
+	// To export the secrets you will need to the KeyUri based on your TOTP variable.
+	// For this purpose an account name and an issuer are needed.
+	aUsername := "username@example.com"
+	anIssuer := "A Company"
+	ku := t.KeyUri(aUsername, anIssuer)
+
+	// From here you can get the plain text uri.
+	msg = "Exporting config for \"%s\" at \"%s\":\n\t- Plain URI --> %s\n"
+	fmt.Printf(msg, aUsername, anIssuer, ku.String())
 }
