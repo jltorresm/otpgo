@@ -15,13 +15,18 @@ import (
 // TOTP.ensureKey), when the caller does not provide one explicitly.
 const RandomKeyLength = 64
 
+var otpBase32Encoding = base32.StdEncoding.WithPadding(base32.NoPadding)
+
 // Generates a new OTP using the specified parameters based on the rfc4226.
 func generateOTP(key string, counter uint64, length config.Length, algorithm config.HmacAlgorithm) (string, error) {
 	// Ensure key is uppercase
 	key = strings.ToUpper(key)
 
+	// Trim unnecessary paddings in case the key was generated externally.
+	key = strings.TrimRight(key, string(base32.StdPadding))
+
 	// Decode secret key to bytes
-	k, err := base32.StdEncoding.DecodeString(key)
+	k, err := otpBase32Encoding.DecodeString(key)
 	if err != nil {
 		return "", ErrorInvalidKey{msg: err.Error()}
 	}
@@ -52,11 +57,11 @@ func generateOTP(key string, counter uint64, length config.Length, algorithm con
 }
 
 // Generates a random key of the specified length, usable for OTP generation.
-func randomKey(length int) (string, error) {
+func randomKey(length uint) (string, error) {
 	buff := make([]byte, length)
 	if _, err := rand.Read(buff); err != nil {
 		return "", err
 	}
 
-	return base32.StdEncoding.EncodeToString(buff), nil
+	return otpBase32Encoding.EncodeToString(buff), nil
 }
