@@ -2,7 +2,36 @@ package otpgo
 
 import (
 	"testing"
+
+	"github.com/jltorresm/otpgo/config"
 )
+
+func TestGenerateOTP(t *testing.T) {
+	cases := []struct {
+		label       string
+		key         string
+		expectedOtp string
+	}{
+		{"Pad", "4LOWUKIZK2YA=======", "551709"},
+		{"No Pad", "4LOWUKIZK2YA", "551709"},
+		{"Pad 2", "NAZXS===", "967352"},
+		{"No Pad 2", "NAZXS", "967352"},
+	}
+
+	for _, c := range cases {
+		t.Run(c.label, func(t *testing.T) {
+			otp, err := generateOTP(c.key, 1, config.Length6, config.HmacSHA1)
+
+			if c.expectedOtp != otp {
+				t.Errorf("unexpected otp\nexpected: %s\n  actual: %s", c.expectedOtp, otp)
+			}
+
+			if err != nil {
+				t.Errorf("unexpected error: %s", err)
+			}
+		})
+	}
+}
 
 func TestRandomKey(t *testing.T) {
 	cases := []struct {

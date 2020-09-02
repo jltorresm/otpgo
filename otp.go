@@ -22,6 +22,9 @@ func generateOTP(key string, counter uint64, length config.Length, algorithm con
 	// Ensure key is uppercase
 	key = strings.ToUpper(key)
 
+	// Trim unnecessary paddings in case the key was generated externally.
+	key = strings.TrimRight(key, string(base32.StdPadding))
+
 	// Decode secret key to bytes
 	k, err := otpBase32Encoding.DecodeString(key)
 	if err != nil {
