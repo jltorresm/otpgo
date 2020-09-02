@@ -91,8 +91,8 @@ func (t *TOTP) Validate(token string) (bool, error) {
 // KeyUri return an authenticator.KeyUri configured with the current TOTP params.
 //     - accountName is the username or email of the account
 //     - issuer is the site or org
-func (t *TOTP) KeyUri(accountName, issuer string) authenticator.KeyUri {
-	return authenticator.KeyUri{
+func (t *TOTP) KeyUri(accountName, issuer string) *authenticator.KeyUri {
+	return &authenticator.KeyUri{
 		Type: "totp",
 		Label: authenticator.Label{
 			AccountName: accountName,

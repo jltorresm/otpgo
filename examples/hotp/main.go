@@ -54,6 +54,8 @@ func main() {
 	ku := h.KeyUri(aUsername, anIssuer)
 
 	// From here you can get the plain text uri.
-	msg = "Exporting config for \"%s\" at \"%s\":\n\t- Plain URI --> %s\n"
-	fmt.Printf(msg, aUsername, anIssuer, ku.String())
+	msg = "Exporting config for \"%s\" at \"%s\":\n\t- Plain URI --> %s\n\t- QR code image, base 64 encoded (" +
+		"truncated to save space) --> %s...\n"
+	qr, _ := ku.QRCode()
+	fmt.Printf(msg, aUsername, anIssuer, ku.String(), qr[0:200])
 }

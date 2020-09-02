@@ -86,8 +86,8 @@ func (h *HOTP) Validate(token string) (bool, error) {
 // KeyUri return an authenticator.KeyUri configured with the current HOTP params.
 //     - accountName is the username or email of the account
 //     - issuer is the site or org
-func (h *HOTP) KeyUri(accountName, issuer string) authenticator.KeyUri {
-	return authenticator.KeyUri{
+func (h *HOTP) KeyUri(accountName, issuer string) *authenticator.KeyUri {
+	return &authenticator.KeyUri{
 		Type: "hotp",
 		Label: authenticator.Label{
 			AccountName: accountName,
