@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
+	"encoding/json"
 	"hash"
 )
 
@@ -49,4 +50,8 @@ func (alg HmacAlgorithm) String() string {
 	}
 
 	return s
+}
+
+func (alg HmacAlgorithm) MarshalJSON() ([]byte, error) {
+	return json.Marshal(alg.String())
 }
