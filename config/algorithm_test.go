@@ -87,3 +87,39 @@ func TestHmacAlgorithm_String(t *testing.T) {
 		}
 	}
 }
+
+func TestHmacAlgorithm_MarshalJSON(t *testing.T) {
+	cases := []struct {
+		label        string
+		alg          HmacAlgorithm
+		expectedJson string
+		shouldPanic  bool
+	}{
+		{label: "HmacSHA1", alg: HmacSHA1, expectedJson: `"SHA1"`},
+		{label: "HmacSHA256", alg: HmacSHA256, expectedJson: `"SHA256"`},
+		{label: "HmacSHA512", alg: HmacSHA512, expectedJson: `"SHA512"`},
+		{label: "Panicky", alg: HmacAlgorithm(-1), shouldPanic: true},
+	}
+
+	assertPanic := func(t *testing.T, label string, alg HmacAlgorithm) {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Errorf("case %s: was expected to panic", label)
+			}
+		}()
+		_ = alg.String()
+	}
+
+	for _, c := range cases {
+		if c.shouldPanic {
+			assertPanic(t, c.label, c.alg)
+			break
+		}
+
+		bytes, _ := c.alg.MarshalJSON()
+
+		if c.expectedJson != string(bytes) {
+			t.Errorf("case %s: wrong hash json\nexpected: %s\n  actual: %s", c.label, c.expectedJson, bytes)
+		}
+	}
+}
