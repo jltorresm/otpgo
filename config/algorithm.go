@@ -36,6 +36,7 @@ func (alg HmacAlgorithm) Hash() (h hash.Hash) {
 	return h
 }
 
+// String returns a string representation of HmacAlgorithm.
 func (alg HmacAlgorithm) String() string {
 	var s string
 	switch alg {
@@ -52,6 +53,7 @@ func (alg HmacAlgorithm) String() string {
 	return s
 }
 
+// MarshalJSON returns a JSON representation of HmacAlgorithm.
 func (alg HmacAlgorithm) MarshalJSON() ([]byte, error) {
 	return json.Marshal(alg.String())
 }
