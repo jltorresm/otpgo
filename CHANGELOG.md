@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clean json marshalling for internal configurations.
 - Improve test coverage and go docs.
 
-## [0.2.0] - 2020-09-02
+## [v0.2.0] - 2020-09-02
 ### Added
 - Mark as first official release.
 - QR support to export key URI.
@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Handle key padding correctly when generating OTPs.
 
-## [0.1.0] - 2020-08-28
+## [v0.1.0] - 2020-08-28
 ### Added
 - Generation and validation of tokens.
 - Simple standalone usage examples.
@@ -36,5 +36,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic go module configuration, README, badges.
 
 [Unreleased]: https://github.com/jltorresm/otpgo/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/jltorresm/otpgo/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/jltorresm/otpgo/compare/5130d24...v0.1.0
+[v0.2.0]: https://github.com/jltorresm/otpgo/compare/v0.1.0...v0.2.0
+[v0.1.0]: https://github.com/jltorresm/otpgo/compare/5130d24...v0.1.0
