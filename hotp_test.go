@@ -1,6 +1,7 @@
 package otpgo
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/jltorresm/otpgo/config"
@@ -265,5 +266,27 @@ func TestHOTP_KeyUri(t *testing.T) {
 
 	if expectedUri != uri.String() {
 		t.Errorf("unexpected key URI\nexpected: %s\n  actual: %s", expectedUri, uri.String())
+	}
+}
+
+func TestHOTPJson(t *testing.T) {
+	h := HOTP{
+		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
+		Counter:   9338,
+		Leeway:    1,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length7,
+	}
+
+	expectedJson := `{"key":"73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ","counter":9338,"leeway":1,"algorithm":"SHA256","length":7}`
+
+	j, err := json.Marshal(h)
+	if err != nil {
+		t.Errorf("unexpected error: %s", err)
+		t.FailNow()
+	}
+
+	if expectedJson != string(j) {
+		t.Errorf("unexpected json:\nexpected: %s\n  actual: %s", expectedJson, j)
 	}
 }

@@ -1,6 +1,7 @@
 package otpgo
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
@@ -255,6 +256,28 @@ func TestTOTP_KeyUri(t *testing.T) {
 
 	if expectedUri != uri.String() {
 		t.Errorf("unexpected key URI\nexpected: %s\n  actual: %s", expectedUri, uri.String())
+	}
+}
+
+func TestTOTPJson(t *testing.T) {
+	h := TOTP{
+		Key:       "73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ",
+		Period:    30,
+		Delay:     1,
+		Algorithm: config.HmacSHA256,
+		Length:    config.Length7,
+	}
+
+	expectedJson := `{"key":"73QK7D3A3PIZ6NUQQBF4BNFYQBRVUHUQ","period":30,"delay":1,"algorithm":"SHA256","length":7}`
+
+	j, err := json.Marshal(h)
+	if err != nil {
+		t.Errorf("unexpected error: %s", err)
+		t.FailNow()
+	}
+
+	if expectedJson != string(j) {
+		t.Errorf("unexpected json:\nexpected: %s\n  actual: %s", expectedJson, j)
 	}
 }
 

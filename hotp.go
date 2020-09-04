@@ -18,11 +18,11 @@ const (
 
 // The HOTP type used to generate HMAC-Based One-Time Passwords.
 type HOTP struct {
-	Key       string // Secret
-	Counter   uint64
-	Leeway    uint64
-	Algorithm config.HmacAlgorithm
-	Length    config.Length
+	Key       string               `json:"key"`       // Secret base32 encoded string
+	Counter   uint64               `json:"counter"`   // Current value to calculate around
+	Leeway    uint64               `json:"leeway"`    // Acceptable steps for sync error
+	Algorithm config.HmacAlgorithm `json:"algorithm"` // Hash algorithm to use in the calculation
+	Length    config.Length        `json:"length"`    // Length of the resulting code
 }
 
 // Generate a HMAC-Based One-Time Password.

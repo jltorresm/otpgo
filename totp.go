@@ -22,11 +22,11 @@ const (
 
 // The TOTP type used to generate Time-Based One-Time Passwords.
 type TOTP struct {
-	Key       string // Secret base32 encoded string
-	Period    int    // Number of seconds the TOTP is valid
-	Delay     int    // Acceptable steps for network delay
-	Algorithm config.HmacAlgorithm
-	Length    config.Length
+	Key       string               `json:"key"`       // Secret base32 encoded string
+	Period    int                  `json:"period"`    // Number of seconds the TOTP is valid
+	Delay     int                  `json:"delay"`     // Acceptable steps for network delay
+	Algorithm config.HmacAlgorithm `json:"algorithm"` // Hash algorithm to use in the calculation
+	Length    config.Length        `json:"length"`    // Length of the resulting code
 }
 
 // Generate a Time-Based One-Time Password.
