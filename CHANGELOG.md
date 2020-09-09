@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - List of supported algorithms.
 - Basic go module configuration, README, badges.
 
-[Unreleased]: https://github.com/jltorresm/otpgo/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/jltorresm/otpgo/compare/v0.3.0...HEAD
 [v0.3.0]: https://github.com/jltorresm/otpgo/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/jltorresm/otpgo/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/jltorresm/otpgo/compare/5130d24...v0.1.0
