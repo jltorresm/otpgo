@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -46,8 +47,11 @@ func main() {
 	ku := t.KeyUri(aUsername, anIssuer)
 
 	// From here you can get the plain text uri.
-	msg = "Exporting config for \"%s\" at \"%s\":\n\t- Plain URI --> %s\n\t- QR code image, base 64 encoded (" +
-		"truncated to save space) --> %s...\n"
+	msg = "Exporting config for \"%s\" at \"%s\":\n" +
+		"\t- Plain URI --> %s\n" +
+		"\t- QR code image, base 64 encoded (truncated to save space) --> %s...\n" +
+		"\t- JSON --> %s\n"
 	qr, _ := ku.QRCode()
-	fmt.Printf(msg, aUsername, anIssuer, ku.String(), qr[0:200])
+	jsonParams, _ := json.Marshal(ku)
+	fmt.Printf(msg, aUsername, anIssuer, ku.String(), qr[0:200], jsonParams)
 }
