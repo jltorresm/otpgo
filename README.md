@@ -11,7 +11,6 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 
 # Contents
 - [Supported Operations](#supported-operations)
-- [Planned Functionality](#planned-functionality)
 - [Reading Material](#reading-material)
 - [Usage](#usage)
     - [Generating Codes](#generating-codes)
@@ -28,8 +27,6 @@ Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 - Verify HOTP an TOTP codes.
 - Export OTP config as a [Google Authenticator URI][googleURI].
 - Export OTP config as a QR code image (used to register secrets in authenticator apps).
-
-## Planned Functionality
 - Export OTP config as a JSON.
 
 ## Reading Material
@@ -130,7 +127,23 @@ base64EncodedQRImage, _ := otp.
 ```
 
 #### Manual registration
-TODO
+Manual registration usually requires the user to type in the OTP config 
+parameters by hand. The KeyUri type can be easily JSON encoded to then send the 
+params to an external caller or any other place.
+```go
+otp := otpgo.TOTP{
+    Key: "YOUR_KEY",
+    Period: 30,
+    Delay: 1,
+    Algorithm: config.HmacSHA1,
+    Length: 6
+}
+ku := otp.KeyUri("john.doe@example.org", "A Company")
+jsonKeyUri, _ := json.Marshal(ku)
+
+// Then use jsonKeyUri however you like
+// e.g.: send it to the client for further processing
+```
 
 ## Defaults
 If caller doesn't provide a custom configuration when generating OTPs. The 
