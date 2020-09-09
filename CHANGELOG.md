@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Clean json marshalling for internal configurations.
 - Improve test coverage and go docs.
+- Add a proper [CHANGELOG](https://github.com/jltorresm/otpgo/blob/main/CHANGELOG.md).
 
 ## [v0.2.0] - 2020-09-02
 ### Added
