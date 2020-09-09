@@ -17,9 +17,9 @@ const (
 // registration URI for any authenticator app, e.g.: Google Authenticator, Authy,
 // etc.
 type KeyUri struct {
-	Type       string // hotp | totp
-	Label      Label
-	Parameters paramsFormatter
+	Type       string          `json:"type"` // hotp | totp
+	Label      Label           `json:"label"`
+	Parameters paramsFormatter `json:"parameters"`
 }
 
 // String encodes all the KeyUri info as a valid URI.
@@ -51,8 +51,8 @@ func (ku *KeyUri) QRCode() (string, error) {
 
 // The Label is used to identify which account a key is associated with.
 type Label struct {
-	AccountName string // Should be a username, email, etc.
-	Issuer      string // Should be the domain, company, org that is issuing the auth
+	AccountName string `json:"accountName"` // Should be a username, email, etc.
+	Issuer      string `json:"issuer"`      // Should be the domain, company, org that is issuing the auth
 }
 
 // The String method will encode the Label in a valid format to be included in
