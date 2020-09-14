@@ -2,6 +2,7 @@
 HMAC-Based and Time-Based One-Time Password (HOTP and TOTP) library for Go. 
 Implements [RFC 4226][rfc4226] and [RFC 6238][rfc6238].
 
+[![Mentioned in Awesome Go][awesomeBadge]][awesomeLink]
 [![License][licenseBadge]][licenseLink]
 [![Go Report Card][goReportBadge]][goReportLink]
 [![Test Status][testStatusBadge]][testStatusLink]
@@ -179,6 +180,8 @@ filled).
 [releaseLink]: https://github.com/jltorresm/otpgo/releases/latest
 [coverageBadge]: https://coveralls.io/repos/github/jltorresm/otpgo/badge.svg?branch=main
 [coverageLink]: https://coveralls.io/github/jltorresm/otpgo?branch=main
+[awesomeBadge]: https://awesome.re/mentioned-badge.svg
+[awesomeLink]: https://github.com/avelino/awesome-go
 
 [latest]: https://github.com/kilico-travel/kilico-api/releases/latest
 [rfc4226]: https://tools.ietf.org/html/rfc4226
