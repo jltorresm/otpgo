@@ -183,7 +183,6 @@ filled).
 [awesomeBadge]: https://awesome.re/mentioned-badge.svg
 [awesomeLink]: https://github.com/avelino/awesome-go
 
-[latest]: https://github.com/kilico-travel/kilico-api/releases/latest
 [rfc4226]: https://tools.ietf.org/html/rfc4226
 [rfc6238]: https://tools.ietf.org/html/rfc6238
 [googleURI]: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
